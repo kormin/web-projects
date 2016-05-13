@@ -17,8 +17,9 @@ if (!empty($_GET)) {
 
 $test = "https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&pageids=33728&prop=extracts";
 $urldebug = "https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&pageids=33728&prop=revisions&rvprop=content";
-$url = "https://en.wikipedia.org/w/api.php?action=query&format=json&pageids=33728&prop=revisions&rvprop=content";
-
+$url = "https://en.wikipedia.org/w/api.php?action=query&format=json&pageids=33728&prop=revisions&rvprop=content&rvsection=0";
+// http://stackoverflow.com/questions/964454/how-to-use-wikipedia-api-if-it-exists
+// https://en.wikipedia.org/wiki/Special:ApiSandbox
 ?>
 <!DOCTYPE html>
 <html lang="en">
