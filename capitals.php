@@ -2,24 +2,48 @@
 /*
  * Author: https://github.com/kormin
  * Date Created: May 12, 2016
- * 
+ * Description: This program will find the capital or country depending on user's input
+ * Resources: 
+ * https://en.wikipedia.org/wiki/List_of_national_capitals_in_alphabetical_order
  */
 
-// constants
-define('PATH', '/web-projects');
-define('CSS', '/assets/css');
-define('JS', '/assets/js');
+require_once('parser.php');
+
+
+
+$title = "List of national capitals in alphabetical order";
+$pageid = 33728;
+$file = 'countries';
+$cptFl = 'capitals';
+$section = 0;
+$url = getUrl($title, $section);
+if (!chkFile($file.JSN)) {
+	$jstr = getFile($url); // get json from wiki
+	setFile($file.JSN, $jstr); // place json in file
+}else{
+	$jstr = getFile($file.JSN); // get json from file
+}
+$pars = getParsedJson($jstr); // get parsed json
+$cont = getContents($pars); // get contents of json; store string
+// var_dump($jstr);
+// Country
+$arr = search($jstr, "{{flaglist\|[a-zA-Z0-9'\\\\ ]+");
+// $arr = search($cont, '{{flaglist\|[a-zA-z ]+'); // search for countries and store in arr
+$cntry = strmv("{{flaglist|", $arr); // remove useless chars and store in arr
+
+// $arr = search($cont, '{{[a-zA-z ]+'); // 264 results
+// $arr = search($cont, '{{[a-zA-z ]+\|[a-zA-z ]+'); // 258 results
+// $cntry1 = strmv("{{flaglist|", $arr);
+// $cntry1 = file($file.TXT, FILE_IGNORE_NEW_LINES); // get txt file
+
+// Capital
+$cptl = file($cptFl.TXT, FILE_IGNORE_NEW_LINES); // get txt file and store in arr
 
 if (!empty($_GET)) {
 	$chc = $_GET['location'];
-	echo "$chc";
+	$stat = status($chc, $cntry, $cptl);
 }
 
-$test = "https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&pageids=33728&prop=extracts";
-$urldebug = "https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&pageids=33728&prop=revisions&rvprop=content";
-$url = "https://en.wikipedia.org/w/api.php?action=query&format=json&pageids=33728&prop=revisions&rvprop=content&rvsection=0";
-// http://stackoverflow.com/questions/964454/how-to-use-wikipedia-api-if-it-exists
-// https://en.wikipedia.org/wiki/Special:ApiSandbox
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +81,40 @@ $url = "https://en.wikipedia.org/w/api.php?action=query&format=json&pageids=3372
 					</div>
 				</div>
 			</form>
+		</div>
+		<div class="container">
+			<div class="row">
+				<table class="table table-responsive table-striped table-hover" id="tbl">
+					<thead class="thead-inverse">
+						<tr>
+							<th>#</th>
+							<th>Capital</th>
+							<th>Country</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php 
+						if(empty($_GET)):
+						$i=0;
+						foreach ($cntry as $i1 => $v1): 
+						?>
+						<tr id="" style="cursor: pointer;">
+							<th ><?php echo $i+1; ?></th>
+							<td class="capital"><?php echo json_decode('"'.$cptl[$i++].'"'); ?></td>
+							<td class="country"><?php echo json_decode('"'.$v1.'"'); ?></td>
+						</tr>
+						<?php endforeach; elseif($stat!=-1): ?>
+						<tr id="" style="cursor: pointer;">
+							<th>1</th>
+							<td class="capital"><?php echo json_decode('"'.$cptl[$stat].'"'); ?></td>
+							<td class="country"><?php echo json_decode('"'.$cntry[$stat].'"'); ?></td>
+						</tr>
+						<?php else: ?>
+						<h3>Error occurred. Please try again.</h3>
+						<?php endif; ?>
+					</tbody>
+				</table>
+			</div>
 		</div>
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="<?php echo PATH.JS; ?>/jquery-2.2.3.min.js" type="text/javascript"></script>

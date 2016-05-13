@@ -1,0 +1,249 @@
+Abu Dhabi
+Abuja
+Accra
+Adamstown
+Addis Ababa
+Algiers
+Alofi
+Amman
+Amsterdam
+Andorra la Vella
+Ankara
+Antananarivo
+Apia
+Ashgabat
+Asmara
+Astana
+Asunci\u00f3n
+Athens
+Avarua
+Baghdad
+Baku
+Bamako
+Bandar Seri Begawan
+Bangkok
+Bangui
+Banjul
+Basse-Terre
+Basseterre
+Beijing
+Beirut
+Belgrade
+Belmopan
+Berlin
+Bern
+Bishkek
+Bissau
+Bogot\u00e1
+Bras\u00edlia
+Bratislava
+Brazzaville
+Bridgetown
+Brussels
+Bucharest
+Budapest
+Buenos Aires
+Bujumbura
+Cairo
+Canberra
+Caracas
+Castries
+Cayenne
+Charlotte Amalie
+Chisinau
+Cockburn Town
+Conakry
+Copenhagen
+Dakar
+Damascus
+Dhaka
+Dili
+Djibouti
+Dodoma
+Doha
+Douglas
+Dublin
+Dushanbe
+East Jerusalem
+Edinburgh of the Seven Seas
+Episkopi Cantonment
+Flying Fish Cove
+Fort-de-France
+Freetown
+Funafuti
+Gaborone
+George Town
+Georgetown
+Georgetown
+Gibraltar
+Guatemala City
+Gustavia
+Hag\u00e5t\u00f1a
+Hamilton
+Hanga Roa
+Hanoi
+Harare
+Hargeisa
+Havana
+Helsinki
+Hong Kong
+Honiara
+Islamabad
+Jakarta
+Jamestown
+Jerusalem
+Juba
+Kabul
+Kampala
+Kathmandu
+Khartoum
+Kiev
+Kigali
+King Edward Point
+Kingston
+Kingston
+Kingstown
+Kinshasa
+Kuala Lumpur
+Kuwait City
+Laayoune
+Libreville
+Lilongwe
+Lima
+Lisbon
+Ljubljana
+Lom\u00e9
+London
+Luanda
+Lusaka
+Luxembourg
+Madrid
+Majuro
+Malabo
+Mal\u00e9
+Mamoudzou
+Managua
+Manama
+Manila
+Maputo
+Marigot
+Maseru
+Mata-Utu
+Mbabane
+Mexico City
+Minsk
+Mogadishu
+Monaco
+Monrovia
+Montevideo
+Moroni
+Moscow
+Muscat
+N'Djamena
+Nairobi
+Nassau
+Naypyidaw
+New Delhi
+Ngerulmud
+Niamey
+Nicosia
+Nicosia
+Nouakchott
+Noum\u00e9a
+Nuku\u02balofa
+Nuuk
+Oranjestad
+Oslo
+Ottawa
+Ouagadougou
+Pago Pago
+Palikir
+Panama City
+Papeete
+Paramaribo
+Paris
+Philipsburg
+Phnom Penh
+Plymouth
+Podgorica
+Port Louis
+Port Moresby
+Port of Spain
+Port Vila
+Port-au-Prince
+Porto-Novo
+Prague
+Praia
+Pretoria
+Pristina
+Pyongyang
+Quito
+Rabat
+Reykjav\u00edk
+Riga
+Riyadh
+Road Town
+Rome
+Roseau
+Saint-Denis
+Saipan
+San Jos\u00e9
+San Juan
+San Marino
+San Salvador
+Sana'a
+Santiago
+Santo Domingo
+Sarajevo
+Seoul
+Singapore
+Skopje
+Sofia
+Sri Jayawardenepura Kotte
+St. George's
+St. Helier
+St. John's
+St. Peter Port
+St. Pierre
+Stanley
+Stepanakert
+Stockholm
+Sucre
+Sukhumi
+Suva
+S\u00e3o Tom\u00e9
+Taipei
+Tallinn
+Tarawa Atoll
+Tashkent
+Tbilisi
+Tegucigalpa
+Tehran
+The Valley
+Thimphu
+Tirana
+Tiraspol
+Tokyo
+Tripoli
+Tskhinvali
+Tunis
+T\u00f3rshavn
+Ulaanbaatar
+Vaduz
+Valletta
+Vatican City
+Victoria
+Vienna
+Vientiane
+Vilnius
+Warsaw
+Washington, D.C.
+Wellington
+West Island
+Willemstad
+Windhoek
+Yamoussoukro
+Yaound\u00e9
+Yaren
+Yerevan
+Zagreb
