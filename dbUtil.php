@@ -52,26 +52,53 @@ class PdoDb
 	function setOpts($opts) {
 		$this->opts = $opts;
 	}
-	function setCol($cols, $len) {
-		$flag = 0;
+	function setSqlChk($sqlChk) {
+		$this->sqlChk = $sqlChk;
+	}
+	function toColStr($cols, $len, $opt) { // $opt = 1 is column, 2 is named placeholder
+		$col = "";
+		if ($len < 0) {
+			echo "Error. Column length is invalid on line: ".__LINE__;
+			return -1;
+		}
+		if($opt==1) {
+			$chc = $chc1 = "`";
+		}else if($opt==2) {
+			$chc = ":";
+			$chc1 = "";
+		}else{
+			echo "Error. Column option is invalid on line: ".__LINE__." at loop: ".$i;
+			return -2;
+		}
 		for($i=0;$i<$len;$i++) {
 			if (!preg_match($this->sqlChk, $cols[$i])) { // check if column name is safe
-				$this->cols .= "`".$cols[$i]."`";
-				$this->colsPlace .= ":".$cols[$i];
+				$col .= $chc.$cols[$i].$chc1;
 				if($i+1 != $len) {
-					$this->cols .= ",";
-					$this->colsPlace .= ",";
+					$col .= ",";
 				}
 			}else{
 				echo "Error. Column names are invalid on line: ".__LINE__." at loop: ".$i;
-				$flag = 1;
-				break;
+				return -3;
 			}
 		}
-		// echo $this->cols;
-		if ($flag==0 && $len > 0) {
-			$this->colsLen = $len;
-		}
+		return $col;
+	}
+	function setColReq($cols, $len) { // append to end of string
+		$this->cols .= ",".$this->toColStr($cols, $len, 1);
+		$this->colsPlace .= ",".$this->toColStr($cols, $len, 2);
+	}
+	function setCol($cols, $len) {
+		$this->cols = $this->toColStr($cols, $len, 1);
+		$this->colsPlace = $this->toColStr($cols, $len, 2);
+	}
+	function setColLen($colsLen) {
+		$this->colsLen = $colsLen;
+	}
+	function getCol() {
+		return $this->cols;
+	}
+	function getColPlace() {
+		return $this->colsPlace;
 	}
 	function getDsn() {
 		return $this->dsn;
@@ -155,7 +182,7 @@ class PdoDb
 		$sth = $this->dbh->query($str);
 		return $sth;
 	}
-	function insert($val, $len) {
+	function insert($val, $cols, $len) {
 	
 		$sql = "
 			INSERT INTO 
@@ -166,8 +193,13 @@ class PdoDb
 		;";
 		$sth = $this->dbh->prepare($sql);
 		for($i=0;$i<$len;$i++) {
-			$sth->bindParam($i+1, $val[$i]);
+			echo "$i&nbsp;".$cols[$i]."&nbsp;".$val[$i]."<br>";
+			$sth->bindParam(":".$cols[$i], $val[$i]);
 		}
+		$v = 1;
+		$sth->bindParam(":status", $v);
+		$a = date('Y-m-d');
+		$sth->bindParam(":dateMade", $a);
 		$sth->execute();
 	
 		// $str = 'INSERT INTO `'.$this->dbInfo['table'].'` ('.$cols.') '.'VALUES ('.$val.');';
@@ -202,8 +234,9 @@ function dbConf(){
 	$dbInfo['driver'] = 'sqlite';
 	$dbInfo['table'] = 'notes';
 	$dbInfo['path'] = '';
-	$cols = array("title","details","status","dateMade","dateDue","category");
+	// $cols = array("title","details","status","dateMade","dateDue","category");
 	$sqlFile = 'init.sql';
+	$sqlChk = "\s|=";
 	$opts = [
 		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -212,7 +245,6 @@ function dbConf(){
 	$dbconn = new PdoDb($dbInfo, $opts);
 	$dbconn->setConn();
 	// $dbconn->execSql($sqlFile);
-	$dbconn->setCol($cols, 6);
 	return $dbconn;
 }
 
@@ -228,8 +260,15 @@ function srch($dbconn) {
 	// print_r($arr);
 }
 
-function add($dbconn) {
-	// INSERT INTO `notes` (`title`,`status`,`dateMade`) VALUES ("Hello world",1,date('now'));
-	$dbconn->insert("\"Hello world\",1,date('now')");
-	// $dbconn->insert($cols, $val);
+function add($dbconn, $cols, $val, $len) {
+	// $cols = array("title","details");
+	// $dbconn->setCol($cols, 2);
+	// $colReq = array("status","dateMade");
+	// $dbconn->setColReq($colReq, 2);
+	// $dbconn->setColLen(3+2);
+	// var_dump($dbconn->getCol());
+	// var_dump($dbconn->getColPlace());
+	// $val = array("Worlding it down","This where it at.");
+	// $dbconn->insert($val, $cols, 2);
+	$dbconn->insert($cols, $val, $len);
 }
