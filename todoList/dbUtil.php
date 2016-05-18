@@ -169,52 +169,43 @@ class PdoDb
 		$sth = $this->dbh->prepare($str);
 		$sth->execute();
 	}
-	function select($cols, $opt=null) {
-	
-		// $str = "SELECT 
-		// 	(".$this->cols.")
-		// 	FROM
-		// 	".$this->dbInfo['table']."
-		// 	(".$this->colsPlace.")
-		// ;";
-	
-		$str = 'SELECT '.$cols.' FROM `'.$this->dbInfo['table'].'` '.$opt.';';
-		$sth = $this->dbh->query($str);
+	function select($opt=null) {
+		$sql = "SELECT 
+			".$this->cols."
+			FROM
+			`".$this->dbInfo['table']."`
+			".$opt."
+		;";
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute();
 		return $sth;
 	}
 	function insert($val, $cols, $len) {
-	
 		$sql = "
 			INSERT INTO 
-				".$this->dbInfo['table']."
+				`".$this->dbInfo['table']."`
 				(".$this->cols.")
 				VALUES
 				(".$this->colsPlace.")
 		;";
 		$sth = $this->dbh->prepare($sql);
 		for($i=0;$i<$len;$i++) {
-			echo "$i&nbsp;".$cols[$i]."&nbsp;".$val[$i]."<br>";
+			// echo "$i&nbsp;".$cols[$i]."&nbsp;".$val[$i]."<br>";
 			$sth->bindParam(":".$cols[$i], $val[$i]);
 		}
-		$v = 1;
+		$v = 1; // default status value
 		$sth->bindParam(":status", $v);
-		$a = date('Y-m-d');
+		$a = date('Y-m-d'); // default dateMade value
 		$sth->bindParam(":dateMade", $a);
 		$sth->execute();
-	
-		// $str = 'INSERT INTO `'.$this->dbInfo['table'].'` ('.$cols.') '.'VALUES ('.$val.');';
-		// // echo "<br>$str<br>";
-		// $sth = $this->dbh->prepare($str);
-		// $sth->execute();
 	}
-	function update($colVal, $cond) {
-		$str = 'UPDATE `'.$this->dbInfo['table'].'` SET '.$colVal.' WHERE '.$cond.';';
-		// echo "<br>$str<br>";
+	function update($val, $cond) {
+		$str = "UPDATE `".$this->dbInfo['table']."` SET ".$val." WHERE ".$cond.";";
 		$sth = $this->dbh->prepare($str);
 		$sth->execute();
 	}
 	function delete($cond) {
-		$str = 'DELETE FROM `'.$this->dbInfo['table'].'` WHERE '.$cond.';';
+		$str = "DELETE FROM `".$this->dbInfo['table']."` WHERE ".$cond.";";
 		$sth = $this->dbh->prepare($str);
 		$sth->execute();
 	}
@@ -249,26 +240,41 @@ function dbConf(){
 }
 
 function srch($dbconn) {
-	$sth = $dbconn->select("`title`,`details`,`status`,`dateMade`,`dateDue`,`category`");
+	$cols = array("id","title","details","status","dateMade","dateDue","category");
+	$len = count($cols);
+	$dbconn->setCol($cols, $len);
+	$sth = $dbconn->select();
 	$arr = $sth->fetchAll(PDO::FETCH_ASSOC);
 	return $arr;
-	foreach ($arr as $i => $val) {
-		foreach ($val as $i1 => $val2) {
-			echo "<p>$val2</p>";
-		}
-	}
-	// print_r($arr);
 }
 
-function add($dbconn, $cols, $val, $len) {
-	// $cols = array("title","details");
-	// $dbconn->setCol($cols, 2);
-	// $colReq = array("status","dateMade");
-	// $dbconn->setColReq($colReq, 2);
-	// $dbconn->setColLen(3+2);
+function add($dbconn, $val) {
+	$cols = array();
+	$valu = array();
+	$len = count($val);
+	$i1=0;
+	foreach ($val as $i => $v) {
+		$cols[$i1] = $i;
+		$valu[$i1++] = $v;
+	}
+	$dbconn->setCol($cols, $len);
+	$colReq = array("status","dateMade");
+	$dbconn->setColReq($colReq, 2);
+	$dbconn->setColLen($len+2);
 	// var_dump($dbconn->getCol());
 	// var_dump($dbconn->getColPlace());
-	// $val = array("Worlding it down","This where it at.");
-	// $dbconn->insert($val, $cols, 2);
-	$dbconn->insert($cols, $val, $len);
+	$dbconn->insert($valu, $cols, $len);
+}
+
+function edit($dbconn, $val, $cond) {
+	$valu="";
+	$i1 = 0;
+	$len = count($val);
+	foreach ($val as $i => $v) {
+		$valu .= "`".$i."` = '".$v."'";
+		if(++$i1 != $len) {
+			$valu .= ",";
+		}
+	}
+	$dbconn->update($valu, $cond);
 }

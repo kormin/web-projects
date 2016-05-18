@@ -5,7 +5,9 @@
  * Description: 
  * Resources: 
  * https://wiki.apache.org/couchdb/SchemaForToDoList
- http://getbootstrap.com/javascript/#modals-related-target
+ * http://getbootstrap.com/javascript/#modals-related-target
+ * http://code.tutsplus.com/tutorials/why-you-should-be-using-phps-pdo-for-database-access--net-12059
+ * http://code.tutsplus.com/tutorials/php-database-access-are-you-doing-it-correctly--net-25338
  * Attributes: 
  * Id, Todo, Details, Status, Date Created, Date Due, Category
  */
@@ -19,16 +21,33 @@ $db = dbConf();
 if (!empty($_GET)) {
 	$vals = array();
 	$cols = array();
-	$i1 = 0;
 	$opt = $_GET['submit'];
-	foreach ($_GET as $i => $v) {
+	unset($_GET['submit']);
+	$id = "`id`=".$_GET['post_id'];
+	unset($_GET['post_id']);
+	$status = $_GET['status'];
+	unset($_GET['status']);
+	foreach ($_GET as $i => $v) { // interates GET to retrieve all valid non-empty values
 		if(!empty($v)) {
 			$vals[$i] = $v;
-			if($i!='submit') $cols[$i1++] = $i;
 		}
 	}
 	if ($opt == 'add') {
-		add($db, $vals, $cols, $i1);
+		add($db, $vals);
+	}elseif ($opt == 'edit') {
+		edit($db, $vals, $id);
+	}elseif ($opt == 'delete') {
+		$db->delete($id);
+	}elseif ($opt == 'status') {
+		if ($status==1) {
+			$status = 0;
+		}else{
+			$status = 1;
+		}
+		$stat = array('status' => $status);
+		edit($db, $stat, $id);
+	}else{
+		echo "Option is invalid.";
 	}
 	// var_dump($cols);
 }
@@ -56,38 +75,23 @@ if (!empty($_GET)) {
 		<![endif]-->
 	</head>
 	<body>
-		<nav class="navbar navbar-default navbar-static-top">
+		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<ul class="nav navbar-nav">
-						<li class="col-xs-3">
+						<li class="col-xs-2">
 							<a class="navbar-brand" href="#" style="padding:0px; padding-right: 10px;">
 							<img class="" alt="icon" src="note.png"></a>
 						</li>
-						<li class="col-xs-2 col-md-3"><a href="" data-toggle="modal" data-target="#todoForm" id="add" >Add</a></li>
-						<li class="col-xs-2 col-md-3"><a href="#dbCont" id="edit">Edit</a></li>
-						<li class="col-xs-4 col-md-3"><a href="#dbCont" id="delete">Delete</a></li>
+						<li class="col-xs-2 "><a href="" data-toggle="modal" data-target="#todoForm" id="add" >Add</a></li>
+						<li class="col-xs-2 "><a href="#" id="edit">Edit</a></li>
+						<li class="col-xs-2 "><a href="#" id="delete">Delete</a></li>
+						<li class="col-xs-2 "><a href="" data-toggle="modal" data-target="#helpInfo" id="help">Help</a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
-		<!-- <div class="container">
-			<form class="form-horizontal" method="get">
-				<div class="row form-group">
-					<label for="name" class="control-label col-sm-4">Enter title: </label>
-					<div class="col-sm-8">
-						<input type="text" id="name" class="form-control" name="name">
-					</div>
-				</div>
-				<div class="row form-group">
-					<div class="col-sm-offset-4 col-sm-8">
-						<button type="submit" id="submit" class="btn btn-default" >Send</button>
-					</div>
-				</div>
-			</form>
-		</div> -->
-		<!-- view goes here -->
-		<br><br>
+		<br><br><br>
 		<div class="container" id="dbCont">
 			<div id="db" class=" row">
 				<h2>To-do List</h2>
@@ -122,6 +126,9 @@ if (!empty($_GET)) {
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body ">
+						<!-- Place db todo id here -->
+						<input type="number" min="0" id="post_id" name="post_id" hidden></input>
+						<input type="number" id="status" name="status" hidden></input>
 						<div class="form-group">
 							<label for="title" class="control-label">Title: </label>
 							<input type="text" class="form-control" name="title" id="title">
@@ -148,9 +155,30 @@ if (!empty($_GET)) {
 				</div>
 			</div>
 		</div>
+		<div class="modal fade" id="helpInfo" tabindex="-1" role="dialog" aria-labelledby="helpModal" style="padding:0px;">
+			<div class="modal-dialog modal-sm modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="helpModal">Information</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					</div>
+					<div class="modal-body ">
+						<h4>Click a note</h4>
+						<p>Click a note and a message box will appear. If you click the check mark, you signify that the note has been accomplished. Clicking the check mark when the note has already been accomplished will undo the action.</p>
+						<h4>Add</h4>
+						<p>Click Add and a message box will appear letting you add your note with other optional values.</p>
+						<h4>Edit</h4>
+						<p>Click Edit and choose a note. A message box will appear so you can start editing values.</p>
+						<h4>Delete</h4>
+						<p>Click Delete and choose a note. A message box will then appear prompting you if you wish to continue deleting.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="<?php echo PATH.JS; ?>/jquery-2.2.3.min.js" type="text/javascript"></script>
 		<!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -159,49 +187,79 @@ if (!empty($_GET)) {
 			// variables
 			var txt = ['add','edit','delete'];
 			var len = txt.length;
-			var sub;
+			var opt = [];
+			var sub,i;
+			var inpTxt = ['title','details','dateDue','category'];
+			var inpLen = inpTxt.length;
+			var inpt = [];
+			var tdlist = <?php echo json_encode($res); ?>; // get to do list values 
+			var todoLen = <?php echo json_decode($i1); ?>; // gets length of todo list
+			var todo = [];
+			var post_id = $('#post_id'); // post id for db handling
+			var stat = $('#status'); // status for db handling
 			$(document).ready(main());
 			function main() {
-				var todoLen = <?php echo json_decode($i1); ?>;
-				var todo = [];
 				sub = $('#submit');
-				for(var i=0;i<len;i++) {
-					$('#'+txt[i]).click({p1: txt[i]}, disPrp );
+				for(i=0;i<len;i++) {
+					opt[i] = $('#'+txt[i]);
+					opt[i].click({p1: txt[i]}, optAct );
 				}
-				for(var i=0;i<todoLen;i++) {
+				for(i=0;i<inpLen;i++) {
+					inpt[i] = $('#'+inpTxt[i]);
+				}
+				for(i=0;i<todoLen;i++) {
 					var x = 'todo-'+i;
-					$('#'+x).click({p1: x}, chkStat);
+					todo[i] = $('#'+x);
+					todo[i].click({p1: i}, todoAct);
 				}
 			}
-			function disPrp(e) {
+			function optAct(e) { // perform actions when opt is clicked
 				var x = $(this);
 				sub.prop('value', e.data.p1); // set value of submit button
 				sub.text(e.data.p1);
-				switch(e.data.p1){
-					case txt[0]: add(x);
+				x.data('clicked', true);
+				x.css('color','#FFC30D');
+				for(i=0;i<len;i++) {
+					if (e.data.p1!=txt[i]) {
+						opt[i].prop('clicked', false);
+						opt[i].removeAttr('style');
+					}
+				}
+				for(i=0;i<inpLen;i++) { // disables props when delete mode
+					if(e.data.p1==txt[2]) inpt[i].prop('disabled', true);
+					else inpt[i].prop('disabled', false);
+				}
+				// switch(e.data.p1) {
+				// 	case txt[1]: 
+				// 	case txt[2]: 
+				// 		break;
+				// 	default: break;
+				// }
+			}
+			function todoAct(e) { // perform actions when todo is clicked
+				var cond = (!(opt[1].data('clicked')) && !(opt[2].data('clicked')));
+				if ( cond ) {
+					sub.prop('value', 'status'); // set value of submit button
+					var tp = $("<span class=\"glyphicon glyphicon-ok\"></span>");
+					sub.text('');
+					sub.append(tp);
+				}
+				for(i=0;i<todoLen;i++) { // find row
+					if(i==e.data.p1) { // if row == i
+						post_id.val(tdlist[i]['id']); // store id to post_id for submit
+						stat.val(tdlist[i]['status']); // store status to var for submit
+						for(var i1=0;i1<inpLen;i1++) { // display values in modal box
+							inpt[i1].val(tdlist[i][inpTxt[i1]]);
+						}
 						break;
-					case txt[1]: 
-						break;
-					case txt[2]: 
-						break;
-					// default: alert('Error.');
+					}
 				}
 			}
-			function chkStat(e) {
-				sub.prop('value', 'status'); // set value of submit button
-				// sub.text('status');
-				var tp = $("<span class=\"glyphicon glyphicon-ok\"></span>");
-				sub.text('');
-				sub.append(tp);
-			}
 			function add(x) {
-
 			}
-			function edit() {
-
+			function edit(x) {
 			}
-			function delVal() {
-
+			function delVal(x) {
 			}
 		</script>
 	</body>
