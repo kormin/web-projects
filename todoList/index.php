@@ -12,7 +12,6 @@
  * Id, Todo, Details, Status, Date Created, Date Due, Category
  */
 
-require_once('constants.php');
 require_once('dbUtil.php');
 
 $db = dbConf();

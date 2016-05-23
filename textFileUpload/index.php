@@ -9,8 +9,9 @@
  * http://www.dropzonejs.com/
  http://www.w3schools.com/php/php_file_upload.asp
  */
+ 
+require_once(dirname(__DIR__).'/assets/constants.php');
 
-require_once('constants.php');
 $stat = false;
 $ds = DIRECTORY_SEPARATOR;
 if (!empty($_POST['submit'])) { // && $_FILES['file']['error']==0

@@ -11,12 +11,7 @@
  * https://en.wikipedia.org/wiki/Special:ApiSandbox
  */
 
-// constants
-define('PATH', '/web-projects');
-define('CSS', '/assets/css');
-define('JS', '/assets/js');
-define('JSN','.json');
-define('TXT','.txt');
+require_once(dirname(__DIR__).'/assets/constants.php');
 
 // https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&pageids=33728&prop=revisions&rvprop=content&rvsection=0
 // https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&pageids=33728&prop=categories

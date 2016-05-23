@@ -6,7 +6,7 @@
 * Good practice: http://php.net/manual/en/pdo.prepared-statements.php
 */
 
-require_once('constants.php');
+require_once(dirname(__DIR__).'/assets/constants.php');
 
 class PdoDb
 {

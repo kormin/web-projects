@@ -1,11 +1,6 @@
 <?php
 
-// constants
-define('PATH', '/web-projects');
-define('CSS', '/assets/css');
-define('JS', '/assets/js');
-define('JSN','.json');
-define('TXT','.txt');
+require_once(dirname(__DIR__).'/assets/constants.php');
 
 function search($src, $key) {
 	preg_match_all('/'.$key.'/', $src, $match);

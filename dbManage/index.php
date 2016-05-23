@@ -7,7 +7,7 @@
  * 
  */
 
-require_once('constants.php');
+require_once(dirname(__DIR__).'/assets/constants.php');
 
 
 ?>
