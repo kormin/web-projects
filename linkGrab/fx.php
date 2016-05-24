@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__DIR__).'/assets/constants.php');
+require_once('../../assets/index.php');
 
 function search($src, $key) {
 	preg_match_all('/'.$key.'/', $src, $match);

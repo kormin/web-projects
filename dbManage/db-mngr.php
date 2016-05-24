@@ -7,7 +7,7 @@
  * 
  */
 
-require_once(dirname(__DIR__).'/assets/constants.php');
+require_once('../../assets/index.php');
 
 
 ?>
@@ -20,10 +20,9 @@ require_once(dirname(__DIR__).'/assets/constants.php');
 		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 		<title>Database Manager</title>
 
-		<meta name="description" content="programming challenge taken from /r/dailyprogrammer subreddit">
 		<meta name="keywords" content="php,html5,forms,inputs">
 		<link rel="author" href="https://github.com/kormin">
-		<link href="<?php echo PATH.CSS; ?>/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="<?=TWBS; ?>" rel="stylesheet" type="text/css">
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -69,9 +68,9 @@ require_once(dirname(__DIR__).'/assets/constants.php');
 			</div>
 		</div>
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		<script src="<?php echo PATH.JS; ?>/jquery-2.2.3.min.js" type="text/javascript"></script>
+		<script src="<?=JQRY; ?>" type="text/javascript"></script>
 		<!-- Include all compiled plugins (below), or include individual files as needed -->
-		<!-- <script src="<?php echo PATH.JS; ?>/bootstrap.min.js"></script> -->
+		<!-- <script src="<?=TWBS_JS; ?>"></script> -->
 		<script type="text/javascript">
 			// variables
 

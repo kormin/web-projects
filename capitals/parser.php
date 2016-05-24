@@ -11,7 +11,7 @@
  * https://en.wikipedia.org/wiki/Special:ApiSandbox
  */
 
-require_once(dirname(__DIR__).'/assets/constants.php');
+require_once('../../assets/index.php');
 
 // https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&pageids=33728&prop=revisions&rvprop=content&rvsection=0
 // https://en.wikipedia.org/w/api.php?action=query&format=jsonfm&pageids=33728&prop=categories

@@ -9,8 +9,7 @@
  * http://stackoverflow.com/questions/11024225/open-url-with-php
  */
 
-// require_once(__DIR__.'/assets/constants.php');
-require_once(dirname(__DIR__).'/assets/constants.php');
+require_once('../../assets/index.php');
 
 $dist = 140;
 $_SESSION['state'] = 'Error';
@@ -42,9 +41,9 @@ $cond = !empty($_GET['submit']);
 if ($cond) {
 	$num = $_GET['number'];
 	$_SESSION['state'] = status($num);
-	echo $_SESSION['num'];
+	// echo $_SESSION['num'];
 }else{
-	echo $_SESSION['num'] = getPrng($dist);
+	$_SESSION['num'] = getPrng($dist);
 	$_SESSION['state'] = 'Error';
 }
 // if ($_SESSION['state']=='correct') { // redirect after 3 seconds
@@ -67,7 +66,7 @@ if ($cond) {
 		<meta name="description" content="Program to display capital cities">
 		<meta name="keywords" content="php,html5,forms,inputs">
 		<link rel="author" href="https://github.com/kormin">
-		<link href="<?php echo PATH.CSS; ?>/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="<?=TWBS; ?>" rel="stylesheet" type="text/css">
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -82,7 +81,7 @@ if ($cond) {
 				<h3>Guess My Number</h3>
 				<p>The number is between 0 and <?=$_SESSION['max']?>.</p>
 				<p>
-					<?php if($cond) echo "Your number is ".$_SESSION['state']."."; 
+					<?php if($cond) echo "Your number is <b>".$_SESSION['state']."</b>."; 
 					if($_SESSION['state'] == 'correct') echo "<br>You will be redirected in 1 sec.";
 					?>
 				</p>
@@ -105,12 +104,13 @@ if ($cond) {
 			</form>
 		</div>
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		<script src="<?php echo PATH.JS; ?>/jquery-2.2.3.min.js" type="text/javascript"></script>
+		<!-- <script src="<?=JQRY; ?>" type="text/javascript"></script> -->
 		<!-- Include all compiled plugins (below), or include individual files as needed -->
-		<!-- <script src="<?php echo PATH.JS; ?>/bootstrap.min.js"></script> -->
+		<!-- <script src="<?=TWBS_JS; ?>"></script> -->
 		<script type="text/javascript">
 			// variables
-			$(document).ready(main());
+			// $(document).ready(main());
+			main();
 			function main() {
 				var state = '<?php echo $_SESSION['state']; ?>';
 				if (state == 'correct') {
