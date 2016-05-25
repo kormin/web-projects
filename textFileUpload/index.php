@@ -81,27 +81,25 @@ if (!empty($_POST['submit'])) { // && $_FILES['file']['error']==0
 		</div>
 		<div class="container">
 			<div class="row">
-				<?php
-					if ($stat):
-						$file = file_get_contents($file);
-ini_set('auto_detect_line_endings', true);
-				?>
-				<p><?php echo $file; ?></p>
-				<?php endif; ?>
-				<!-- <table class="table table-responsive table-striped table-hover" id="tbl">
+				<table class=" table-responsive" id="tbl">
 					<thead class="thead-inverse">
 						<tr>
-							<th>#</th>
-							<th>Strings</th>
+							<th>Contents</th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php 
+						<?php
+							// ini_set('auto_detect_line_endings', true);
+							if ($stat):
+								$txt = file_get_contents($file);
+							foreach (file($file) as $i => $v): 
 						?>
-						<tr id="" style="cursor: pointer;">
+						<tr id="" >
+							<td><?=$v;?></td>
 						</tr>
+						<?php endforeach; endif; ?>
 					</tbody>
-				</table> -->
+				</table>
 			</div>
 		</div>
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
