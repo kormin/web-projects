@@ -11,6 +11,7 @@ require_once(dirname(__DIR__).'/assets/index.php');
 define('TITLE', 'Geometry Calculator');
 $div = 'shapesDiv';
 $div1 = 'optionsDiv';
+$div2 = 'valueDiv';
 
 // if (!empty($_GET['submit'])) {
 // }else{
@@ -52,6 +53,7 @@ $div1 = 'optionsDiv';
 			<form class="form-horizontal" method="get" id="geom">
 				<div class="row form-group radio <?=$div;?>"></div>
 				<div class="row form-group radio <?=$div1;?>"></div>
+				<div class="row form-group radio <?=$div2;?>"></div>
 				<br>
 				<div class="row form-group">
 					<div class="col-xs-offset-5 col-xs-7">
@@ -70,54 +72,102 @@ $div1 = 'optionsDiv';
 		<!-- <script src="<?=JS; ?>/bootstrap.min.js"></script> -->
 		<script type="text/javascript">
 			// variables
-			var i=0,idx=0,shapeLen=0,j='',optArr=[],optId='options',optArrId=[];
+			var optId='', valId='values';
 			var lbl = ['<label class="col-sm-offset-4 col-sm-8 col-xs-12" ', '</label>'];
-			var first = true;
+			var i=0,idx=0,shapeLen=0,j='';
+			var first = true, firstItemInJson = true;
+			var optArr=[],optArrId=[],formula=[];
+			var jsonData, radio;
 			$(document).ready(main());
 			function main() {
 
 				var opts = $('.<?=$div1;?>');
+				
 
 				$.getJSON('shapes.php', function(data) {
+					jsonData = data;
+					// alert(jsonData.toSource());
 					$.each(data, function(i, v) {
-						if (i==optId) {
-							var inp = '<input type="radio" name="'+optId+'" value="';
+						if (firstItemInJson) {
+							optId = i;
 							optArr = v;
+							// alert(v.toSource());
 							optArrId = Object.getOwnPropertyNames(v);
 							shapeLen = Object.keys(v).length; // fx does not work for IE < 9
-							for(var i1=0;i1<shapeLen;i1++) {
-								(first) ? j = 'checked' : j = '';
-								first = false;
+							var inp = '<input type="radio" name="'+optId+'" value="';
+							for(var i1=0;i1<shapeLen;i1++) { // traverse arr options contents
+								// (first) ? j = 'checked' : j = '';
+								// first = false;
 								var inp1 = inp+i1+'" '+j+' id="'+optId+i1+'">';
 								opts.append(lbl[0]+' id="lbl'+optId+i1+'">'+inp1+optArr[optArrId[i1]]+lbl[1]);
 							}
 							first = true;
+							firstItemInJson = false;
 						}else{
-							var inp = '<input type="radio" name="values" value="';
-							(first) ? j = 'checked' : j = '';
-							first=false;
+							var inp = '<input type="radio" name="'+valId+'" class="hello" value="';
+							// (first) ? j = 'checked' : j = '';
+							// first=false;
 							var inp1 = inp+i+'" '+j+' id="'+i+'">';
 							$('.<?=$div;?>').append(lbl[0]+'>'+inp1+i+lbl[1]);
 						}
 					});
-					$('.<?=$div;?> input').change(function() {	
-						var radio = $("input[name='values']:checked", ".<?=$div;?>").val();
+					$(".<?=$div;?> input").change(function() {
+						radio = $("input[name='"+valId+"']:checked", ".<?=$div;?>").val();
 						var shapeOpt = Object.keys(data[radio]);
 						var len = Object.keys(data[radio]).length;
+						var cond = shapeOpt[i1]!=undefined && shapeOpt[i1]!=null;
+						// display options
 						for(var i1=0;i1<len;i1++) {
-							if(shapeOpt[i1]!=undefined && shapeOpt[i1]!=null)
+							if(optArrId[i1]!=undefined && shapeOpt[i1]!=null) 
 								if(shapeOpt[i1]!=optArrId[i1]) {
-									// alert(i1);
-									$('#'+optId+i1).attr('checked', false);
+									// $('#'+optId+i1).attr('checked', false);
 									$('#lbl'+optId+i1).hide();
 								}else{
-									$('#'+optId+i1).attr('checked', true);
+									// $('#'+optId+i1).attr('checked', true);
 									$('#lbl'+optId+i1).show();
 								}
+							
+						}
+						var optRadio = $("input[name='"+optId+"']:checked", ".<?=$div1;?>").val();
+						var	optArr = Object.getOwnPropertyNames(jsonData[optId]);
+						if(optRadio!=undefined && optRadio!=null) {
+							// alert(optRadio);
+							// var tp = $("input[name='"+optId+optRadio+"']:checked", ".<?=$div1;?>").val();
+							parseStr(radio, optArr[optRadio]);
 						}
 					});
-
+					$('.<?=$div1;?> input').change(function() {
+						var optRadio = $("input[name='"+optId+"']:checked", ".<?=$div1;?>").val();
+						// var shapeOpt = Object.keys(data[optRadio]);
+						// var len = Object.keys(data[optRadio]).length;
+						var	optArr = Object.getOwnPropertyNames(jsonData[optId]);
+						// alert(optRadio);
+							// var tp = $("input[name='"+optId+optRadio+"']:checked", ".<?=$div1;?>").val();
+							parseStr(radio, optArr[optRadio]);
+					});
 				});
+			}
+			function parseStr(radio, radio1) { // radio is name of shape. radio1 is shapes P/A
+				// var radio = $("input[name='"+optId+"']:checked", ".<?=$div1;?>").val();
+				var	foru = jsonData[radio][radio1];
+				var len,id,i1;
+				var uin = [], uin1 = [], seen = [];
+				// alert(jsonData[radio][radio1]);
+				for(i1=0,id=0,len=foru.length;i1<len;i1++) {
+					if (foru[i1]>='a' && foru[i1]<='z' ) {
+						uin[id++] = foru[i1];
+					}
+				}
+				len=uin.length;
+				for(i1=0,id=0;i1<len;i1++) {
+					var c = uin[i1];
+					if (!seen[c]) {
+						seen[c] = true;
+						alert(c);
+						uin1[id++] = c;
+					}
+				}
+
 			}
 		</script>
 	</body>
