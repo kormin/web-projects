@@ -12,6 +12,8 @@ define('TITLE', 'Geometry Calculator');
 $div = 'shapesDiv';
 $div1 = 'optionsDiv';
 $div2 = 'valueDiv';
+$div3 = 'valueDivParent';
+$div4 = 'submit';
 
 // if (!empty($_GET['submit'])) {
 // }else{
@@ -50,14 +52,16 @@ $div2 = 'valueDiv';
 			</div>
 		</div>
 		<div class="container">
-			<form class="form-horizontal" method="get" id="geom">
+			<form class="form-horizontal" method="get" >
 				<div class="row form-group radio <?=$div;?>"></div>
-				<div class="row form-group radio <?=$div1;?>"></div>
-				<div class="row form-group radio <?=$div2;?>"></div>
 				<br>
-				<div class="row form-group">
+				<div class="row form-group radio <?=$div1;?>"></div>
+				<br>
+				<div id="<?=$div3;?>"></div>
+				<br>
+				<div class="row form-group " id="<?=$div4;?>">
 					<div class="col-xs-offset-5 col-xs-7">
-						<button type="submit" id="submit" class="btn btn-default" name="submit" value="submit">calculate</button>
+						<button type="submit" id="<?=$div4;?>" class="btn btn-default" name="<?=$div4;?>" value="<?=$div4;?>">calculate</button>
 					</div>
 				</div>
 			</form>
@@ -74,16 +78,14 @@ $div2 = 'valueDiv';
 			// variables
 			var optId='', valId='values';
 			var lbl = ['<label class="col-sm-offset-4 col-sm-8 col-xs-12" ', '</label>'];
+			var subm = $('#<?=$div4;?>');
 			var i=0,idx=0,shapeLen=0,j='';
 			var first = true, firstItemInJson = true;
 			var optArr=[],optArrId=[],formula=[];
 			var jsonData, radio;
 			$(document).ready(main());
 			function main() {
-
-				var opts = $('.<?=$div1;?>');
-				
-
+				subm.hide();
 				$.getJSON('shapes.php', function(data) {
 					jsonData = data;
 					// alert(jsonData.toSource());
@@ -99,14 +101,16 @@ $div2 = 'valueDiv';
 								// (first) ? j = 'checked' : j = '';
 								// first = false;
 								var inp1 = inp+i1+'" '+j+' id="'+optId+i1+'">';
-								opts.append(lbl[0]+' id="lbl'+optId+i1+'">'+inp1+optArr[optArrId[i1]]+lbl[1]);
+								$('.<?=$div1;?>').append(lbl[0]+' id="lbl'+optId+i1+'">'+inp1+optArr[optArrId[i1]]+lbl[1]);
 							}
 							first = true;
 							firstItemInJson = false;
 						}else{
 							var inp = '<input type="radio" name="'+valId+'" class="hello" value="';
+							var key = Object.keys(data[i]);
 							// (first) ? j = 'checked' : j = '';
 							// first=false;
+							alert(data[i].toSource());
 							var inp1 = inp+i+'" '+j+' id="'+i+'">';
 							$('.<?=$div;?>').append(lbl[0]+'>'+inp1+i+lbl[1]);
 						}
@@ -149,25 +153,35 @@ $div2 = 'valueDiv';
 			}
 			function parseStr(radio, radio1) { // radio is name of shape. radio1 is shapes P/A
 				// var radio = $("input[name='"+optId+"']:checked", ".<?=$div1;?>").val();
+				var lbl1 = ['<label class="control-label col-sm-4" for="', '">', '</label>'];
+				var inp = ['<input type="number" min="0" class="form-control" id="', '">'];
+				var divinp = ['<div class="col-sm-8">', '</div>'];
+				var div = ['<div class="row form-group <?=$div2;?>">', '</div>'];
+				var divobj = $('.<?=$div2;?>');
+				var divParnt = $('#<?=$div3;?>');
 				var	foru = jsonData[radio][radio1];
 				var len,id,i1;
 				var uin = [], uin1 = [], seen = [];
 				// alert(jsonData[radio][radio1]);
 				for(i1=0,id=0,len=foru.length;i1<len;i1++) {
-					if (foru[i1]>='a' && foru[i1]<='z' ) {
+					if (foru[i1]>='a' && foru[i1]<='z' ) { // get available user input
 						uin[id++] = foru[i1];
 					}
 				}
 				len=uin.length;
-				for(i1=0,id=0;i1<len;i1++) {
+				for(i1=0,id=0;i1<len;i1++) { // check for repeats
 					var c = uin[i1];
 					if (!seen[c]) {
 						seen[c] = true;
-						alert(c);
 						uin1[id++] = c;
 					}
 				}
-
+				len=uin1.length;
+				for(i1=0;i1<len;i1++) {
+					divobj.remove();
+					divParnt.append(div[0]+lbl1[0]+uin1[i1]+lbl1[1]+'Enter '+uin1[i1]+':'+lbl1[2]+divinp[0]+inp[0]+uin1[i1]+inp[1]+divinp[1]+div[1]);
+				}
+				subm.show();
 			}
 		</script>
 	</body>
