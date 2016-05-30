@@ -7,7 +7,7 @@
  */
 
 // require_once(__DIR__.'/assets/constants.php');
-require_once('../assets/index.php');
+require_once('../../assets/index.php');
 define('TITLE', 'Address Book');
 // $input = array(
 // 	array('fname', 'lname', 'num', 'addr'),
@@ -35,7 +35,7 @@ if (!empty($_GET[$sub])) {
 		else $uin[$i] .= PHP_EOL;
 	}
 	// var_dump($uin);
-	// file_put_contents($file, $uin, FILE_APPEND | LOCK_EX);
+	file_put_contents($file, $uin, FILE_APPEND | LOCK_EX);
 	$done = true;
 }
 
@@ -98,10 +98,10 @@ if (!empty($_GET[$sub])) {
 			</form>
 		</div>
 		<div class="container">
-			<div class="row text-center" id="">
+			<div class="row" id="">
 			<table class="table table-responsive table-striped table-hover" id="tbl">
 				<?php if ($done): ?>
-					<thead class="thead-inverse">
+					<thead class="thead-inverse text-center">
 						<tr>
 						<?php foreach ($input as $i => $v) : ?>
 							<th><?=$v[0];?></th>
@@ -111,21 +111,15 @@ if (!empty($_GET[$sub])) {
 					<tbody>
 						<?php
 							// ini_set('auto_detect_line_endings', true);
-							// $txt = file_get_contents($file);
 							foreach (file($file) as $i => $v): 
+								$len = strlen($v);
 						?>
 						<tr id="" >
-						<?php
-								$len = strlen($v);
-								for($i=0;$i<$len;$i++) :
-									if($v[$i]!=',')
-						?>
-							<td>
-							<?php
-							$v[$i];
-							?>
-							</td>
-						<?php endfor; ?>
+							<?php for($i=0;$i<$len;$i++):?>
+								<td>
+								<?php while($v[$i]!=',' && $v[$i]!="\n") echo $v[$i++];?>
+								</td>
+							<?php endfor; ?>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
