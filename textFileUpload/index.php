@@ -113,6 +113,7 @@ if (!empty($_POST['submit'])) { // && $_FILES['file']['error']==0
 			$(document).ready(main());
 			function main() {
 			}
+			
 		</script>
 	</body>
 </html>

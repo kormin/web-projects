@@ -5,22 +5,31 @@
  * Description: 
  * Resources: 
  * http://getbootstrap.com/css/#forms
+ * http://www.html5rocks.com/en/tutorials/file/dndfiles/
+ * http://stackoverflow.com/questions/14446447/javascript-read-local-text-file
+ * http://stackoverflow.com/questions/7395548/js-and-type-match-as-file-mime-type-need-advice
+ * http://stackoverflow.com/questions/27522979/read-a-local-textfile-using-javascript
+ * 
  */
 
 // require_once(__DIR__.'/assets/constants.php');
 require_once('../assets/index.php');
 define('TITLE', 'Text Editor');
 // $input = array(
-// 	array('fname', 'lname', 'num', 'addr'),
-// 	array('Enter first name: ', 'Enter last name: ', 'Enter number: ', 'Enter address: '),
-// 	array('text', 'text', 'number', 'text')
+//  array('fname', 'lname', 'num', 'addr'),
+//  array('Enter first name: ', 'Enter last name: ', 'Enter number: ', 'Enter address: '),
+//  array('text', 'text', 'number', 'text')
 // );
 $input = array(
+	'flname',
+	'Enter name: ',
 	'txt',
 	'Enter text: '
 );
 $txt = array(20);
 $sub = 'save';
+$opn = 'open';
+$opnid = $opn.'_file';
 $saveUrl = '';
 // var_dump($input);
 
@@ -78,12 +87,18 @@ if (!empty($_GET[$sub])) {
 			<form class="" method="get" >
 				<div class="row form-group">
 					<div class="col-xs-offset-5 col-xs-7">
-						<button type="submit" id="<?=$sub;?>" class="btn btn-default" name="<?=$sub;?>" value="<?=$sub;?>"><?=$sub;?></button>
+						<input type="file" id="<?=$opnid;?>" style="display: none;">
+						<button type="button" id="<?=$opn;?>" class="btn btn-default" onclick="document.getElementById('<?=$opnid;?>').click()">
+						<?=$opn;?></button>
 					</div>
 				</div>
 				<div class="row form-group ">
 					<label for="<?=$input[0];?>" class="control-label col-sm-4"><?=$input[1];?></label>
-					<textarea id="<?=$input[0];?>" name="<?=$input[0];?>" class="form-control" rows="<?=$txt[0];?>"></textarea>
+					<input type="text" id="<?=$input[0];?>" name="<?=$input[0];?>" class="form-control" >
+				</div>
+				<div class="row form-group ">
+					<label for="<?=$input[2];?>" class="control-label col-sm-4"><?=$input[3];?></label>
+					<textarea id="<?=$input[2];?>" name="<?=$input[2];?>" class="form-control" rows="<?=$txt[0];?>"></textarea>
 				</div>
 				<br>
 				<div class="row form-group " >
@@ -103,8 +118,46 @@ if (!empty($_GET[$sub])) {
 		<!-- <script src="<?=JS; ?>/bootstrap.min.js"></script> -->
 		<script type="text/javascript">
 			// variables
-			$(document).ready(main());
+			var url = "";
+			window.onload = function() {
+				$(document).ready(main());
+			}
+			
 			function main() {
+				var finp = document.getElementById('<?=$opnid;?>');
+				var fdsp = document.getElementById('<?=$opn;?>');
+				finp.addEventListener('change', fileRead());
+				// getTxt(url);
+			}
+
+			function fileRead(e) {
+				var file = fileInput.files[0];
+				var type = /text.*/;
+				if(file.type.match(type)){
+					var read = new FileReader();
+					read.onload = function(e) {
+						// fdsp = 
+					}
+				}else{
+					fdsp.innerHTML = "File not supported";
+				}
+			}
+
+			function getTxt(url) {
+				// uses xmlhttprequest
+				var rawfile = new XMLHttpRequest();
+				rawfile.open("GET", url, true);
+				rawfile.onreadystatechange = function () {
+					if(rawfile.readyState === 4) {
+						// alert("in");
+						if (rawfile.status == 200) {
+							var txt = rawfile.responseText;
+							document.getElementById("<?=$input[2];?>").innerHTML = txt;
+							// document.write(txt);
+						}
+					}
+				}
+				rawfile.send(null);
 			}
 		</script>
 	</body>
