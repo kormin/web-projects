@@ -18,7 +18,7 @@
  */
 
 // require_once(__DIR__.'/assets/constants.php');
-require_once('../assets/index.php');
+require_once('../../assets/index.php');
 define('TITLE', 'Text Editor');
 // $input = array(
 //  array('fname', 'lname', 'num', 'addr'),
@@ -45,6 +45,7 @@ if (!empty($_GET[$sub])) {
 	$fcont = $_GET[$input[2]];
 	$res = file_put_contents($fname, $fcont); // delete after
 	if ($res!=false && file_exists($fname)) {
+		// allows for readfile to DL file
 		header('Content-Description: File Transfer');
 		header('Content-Type: application/octet-stream');
 		header("Content-Type: application/download");
@@ -55,8 +56,10 @@ if (!empty($_GET[$sub])) {
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header('Pragma: public');
 
+		// outputs a file
 		readfile($fname);
 
+		// remove fname from server
 		unlink($fname);
 		exit;
 	}
