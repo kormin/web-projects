@@ -6,9 +6,14 @@
  * Resources: 
  * http://getbootstrap.com/css/#forms
  * http://www.html5rocks.com/en/tutorials/file/dndfiles/
- * http://stackoverflow.com/questions/14446447/javascript-read-local-text-file
  * http://stackoverflow.com/questions/7395548/js-and-type-match-as-file-mime-type-need-advice
+ * http://stackoverflow.com/questions/14446447/javascript-read-local-text-file
  * http://stackoverflow.com/questions/27522979/read-a-local-textfile-using-javascript
+ * http://stackoverflow.com/questions/3582671/how-to-open-a-local-disk-file-with-javascript
+ * http://stackoverflow.com/questions/24245105/how-to-get-the-filename-from-the-javascript-filereader
+ * http://php.net/manual/en/function.readfile.php
+ * http://www.media-division.com/the-right-way-to-handle-file-downloads-in-php/
+ * http://stackoverflow.com/questions/11315951/using-the-browser-prompt-to-download-a-file
  * 
  */
 
@@ -36,13 +41,24 @@ $saveUrl = '';
 $done = false;
 if (!empty($_GET[$sub])) {
 	unset($_GET[$sub]);
-	$file = 'addrBook'.TXT;
-	$len = count($_GET);
-	$uin = array();
-	for($i=0;$i<$len;$i++) {
-		$uin[$i] = $_GET[$i];
-		if($i+1<$len) $uin[$i] .= ",";
-		else $uin[$i] .= PHP_EOL;
+	$fname = $_GET[$input[0]];
+	$fcont = $_GET[$input[2]];
+	$res = file_put_contents($fname, $fcont); // delete after
+	if ($res!=false && file_exists($fname)) {
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header("Content-Type: application/download");
+		header('Content-Disposition: attachment; filename="'.basename($fname).'"');
+		header('Expires: 0');
+		header('Content-Length: '.filesize($fname));
+		// below is for IE6
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header('Pragma: public');
+
+		readfile($fname);
+
+		unlink($fname);
+		exit;
 	}
 	// var_dump($uin);
 	// file_put_contents($file, $uin, FILE_APPEND | LOCK_EX);
@@ -118,29 +134,49 @@ if (!empty($_GET[$sub])) {
 		<!-- <script src="<?=JS; ?>/bootstrap.min.js"></script> -->
 		<script type="text/javascript">
 			// variables
+			var finp, fdsp, fnme;
 			var url = "";
 			window.onload = function() {
 				$(document).ready(main());
 			}
-			
 			function main() {
-				var finp = document.getElementById('<?=$opnid;?>');
-				var fdsp = document.getElementById('<?=$opn;?>');
-				finp.addEventListener('change', fileRead());
+				finp = document.getElementById('<?=$opnid;?>');
+				var input = document.getElementsByTagName('input')[0];
+				fnme = $('#<?=$input[0];?>');
+				fdsp = $('#<?=$input[2];?>');
+				// fnme = document.getElementById('<?=$input[0];?>');
+				// fdsp = document.getElementById('<?=$input[2];?>');
+				input.onclick = function () {
+				// for when same file is opened many times
+						this.value = null;
+				};
+				finp.addEventListener('change', fileRead, false);
 				// getTxt(url);
 			}
 
 			function fileRead(e) {
-				var file = fileInput.files[0];
-				var type = /text.*/;
-				if(file.type.match(type)){
-					var read = new FileReader();
-					read.onload = function(e) {
-						// fdsp = 
-					}
-				}else{
-					fdsp.innerHTML = "File not supported";
+				// var file = finp.files[0];
+				var file = e.target.files[0];
+				if (!file) {
+					return;
 				}
+				// var txt = /text.*/;
+				// if(file.type.match(txt)) {
+					var reader = new FileReader();
+				var name = file.name;
+				// fnme.innerHTML = name;
+				fnme.val(name);
+					reader.onload = function(e) {
+						var contents = e.target.result;
+						// fdsp.innerHTML = contents;
+						fdsp.val(contents);
+						// disp(contents);
+						// fdsp = reader.result;
+					};
+					reader.readAsText(file);
+				// }else{
+				// 	fdsp.innerHTML = "File not supported";
+				// }
 			}
 
 			function getTxt(url) {
@@ -150,7 +186,8 @@ if (!empty($_GET[$sub])) {
 				rawfile.onreadystatechange = function () {
 					if(rawfile.readyState === 4) {
 						// alert("in");
-						if (rawfile.status == 200) {
+						if (rawfile.status == 200) //  || rawFile.status == 0 )
+						{
 							var txt = rawfile.responseText;
 							document.getElementById("<?=$input[2];?>").innerHTML = txt;
 							// document.write(txt);
