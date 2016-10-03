@@ -5,17 +5,56 @@
  * Description: 
  * Resources: 
  * http://php.net/manual/en/function.exif-read-data.php
+ * http://php.net/manual/en/function.exif-imagetype.php
  * 
  */
+/*
+ * http://php.net/manual/en/function.exif-imagetype.php
+	Imagetype Constants
+	Value	Constant
+	1	IMAGETYPE_GIF
+	2	IMAGETYPE_JPEG
+	3	IMAGETYPE_PNG
+	4	IMAGETYPE_SWF
+	5	IMAGETYPE_PSD
+	6	IMAGETYPE_BMP
+	7	IMAGETYPE_TIFF_II (intel byte order)
+	8	IMAGETYPE_TIFF_MM (motorola byte order)
+	9	IMAGETYPE_JPC
+	10	IMAGETYPE_JP2
+	11	IMAGETYPE_JPX
+	12	IMAGETYPE_JB2
+	13	IMAGETYPE_SWC
+	14	IMAGETYPE_IFF
+	15	IMAGETYPE_WBMP
+	16	IMAGETYPE_XBM
+	17	IMAGETYPE_ICO
+*/
  
 require_once('../../assets/index.php');
 
-function exifReadData() {
+function exifThumbnail() {
+	if (array_key_exists('file', $_REQUEST)) {
+		$image = exif_thumbnail($_REQUEST['file'], $width, $height, $type);
+	} else {
+		$image = false;
+	}
+	if ($image!==false) {
+		header('Content-type: ' .image_type_to_mime_type($type));
+		echo $image;
+		exit;
+	} else {
+		// no thumbnail available, handle the error here
+		echo 'No thumbnail available';
+	}
+}
+
+function exifReadData($filepath) {
     // echo "test1.jpg:<br />\n";
     // $exif = exif_read_data("D:/School/Programs/5th Yr/1_CpE 429E/pics/Cacanog Quitten/IMG_5964.jpg", 'IFD0');
     // echo $exif===false ? "No header data found.<br />\n" : "Image contains headers<br />\n";
 
-    $exif = exif_read_data("D:/School/Programs/5th Yr/1_CpE 429E/pics/Cacanog Quitten/IMG_5964.jpg", 0, true);
+    $exif = exif_read_data($filepath, 0, true);
     foreach ($exif as $key => $section) {
         foreach ($section as $name => $val) {
             echo $key." ".$name.": ";
@@ -26,9 +65,21 @@ function exifReadData() {
     }
 }
 
-exifReadData();
+function exifGetType($filepath) {
+	$val = exif_imagetype($filepath);
+	// echo $val;
+	return $val;
+}
 
-echo "End";
+function getExif($filepath) {
+	$val = exifGetType($filepath);
+	if ($val!=FALSE) {
+		exifReadData($filepath);
+	}
+}
+
+$filepath = "/IMG_5964.jpg";
+getExif($filepath);
 
 ?>
 <!DOCTYPE html>
