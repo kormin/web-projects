@@ -1,16 +1,34 @@
 <?php
 /*
  * Author: https://github.com/kormin
- * Date Created: October 3 2016
+ * Date Created: October 3, 2016
  * Description: 
- * File Upload
- * In your "php.ini" file, search for the file_uploads directive, and set it to On: file_uploads = On
  * Resources: 
- * http://www.dropzonejs.com/
- http://www.w3schools.com/php/php_file_upload.asp
+ * http://php.net/manual/en/function.exif-read-data.php
+ * 
  */
  
 require_once('../../assets/index.php');
+
+function exifReadData() {
+    // echo "test1.jpg:<br />\n";
+    // $exif = exif_read_data("D:/School/Programs/5th Yr/1_CpE 429E/pics/Cacanog Quitten/IMG_5964.jpg", 'IFD0');
+    // echo $exif===false ? "No header data found.<br />\n" : "Image contains headers<br />\n";
+
+    $exif = exif_read_data("D:/School/Programs/5th Yr/1_CpE 429E/pics/Cacanog Quitten/IMG_5964.jpg", 0, true);
+    foreach ($exif as $key => $section) {
+        foreach ($section as $name => $val) {
+            echo $key." ".$name.": ";
+            print_r($val);
+            // echo "$key.$name: $val";
+            echo "<br>";
+        }
+    }
+}
+
+exifReadData();
+
+echo "End";
 
 ?>
 <!DOCTYPE html>
@@ -26,27 +44,6 @@ require_once('../../assets/index.php');
 		<meta name="keywords" content="php,html5,forms,inputs">
 		<link rel="author" href="https://github.com/kormin">
 		<link href="<?=TWBS; ?>" rel="stylesheet" type="text/css">
-		<style type="text/css">
-			.btn-file {
-				position: relative;
-				overflow: hidden;
-			}
-			.btn-file input[type=file] {
-				position: absolute;
-				top: 0;
-				right: 0;
-				min-width: 100%;
-				min-height: 100%;
-				font-size: 100px;
-				text-align: right;
-				filter: alpha(opacity=0);
-				opacity: 0;
-				outline: none;
-				background: white;
-				cursor: inherit;
-				display: block;
-			}
-		</style>
 		<!-- <link href="<?php echo PATH.CSS; ?>/dropzone.min.css" rel="stylesheet" type="text/css"> -->
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -58,14 +55,7 @@ require_once('../../assets/index.php');
 	</head>
 	<body>
 		<div class="container">
-			<form class="form-horizontal " id="" method="post" action="upload.php" enctype="multipart/form-data">
-				<div class="row form-group">
-					<span class="btn btn-default btn-file">
-						Browse <input type="file" name="myfile" id="myfile" class="file">
-					</span>
-					<input type="submit" name="submit" value="Upload" class="btn btn-primary">
-				</div>
-			</form>
+
 		</div>
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="<?=JQRY; ?>" type="text/javascript"></script>
