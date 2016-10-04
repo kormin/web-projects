@@ -30,6 +30,36 @@
 	16	IMAGETYPE_XBM
 	17	IMAGETYPE_ICO
 */
+
+/*
+	Camera Maker - IFD0 Make
+	Camera Model - IFD0 Model
+	F-stop - COMPUTED ApertureFNumber, EXIF FNumber
+	Exposure time - EXIF ExposureTime
+	ISO speed - EXIF ISOSpeed Ratings
+	Exposure bias - EXIF ExposureBiasValue
+	Focal length - EXIF FocalLength
+	Max aperture - EXIF MaxApertureValue
+	Metering Mode - EXIF MeteringMode
+	Flash mode - 
+	Exposure program - EXIF ExposureProgram
+	Saturation - 
+	Sharpness - 
+	White balance - EXIF WhiteBalance
+
+	Camera Settings:
+	Camera Maker
+	Camera Model
+	F-Stop
+	Exposure Time
+	ISO Speed
+	Exposure bias
+	Focal length
+	Metering Mode
+	Flash Mode
+	White Balance
+	Orientation
+*/
  
 require_once('../../assets/index.php');
 
@@ -49,20 +79,33 @@ function exifThumbnail() {
 	}
 }
 
-function exifReadData($filepath) {
+function exifReadData($filepath, $settings) {
     // echo "test1.jpg:<br />\n";
     // $exif = exif_read_data("D:/School/Programs/5th Yr/1_CpE 429E/pics/Cacanog Quitten/IMG_5964.jpg", 'IFD0');
     // echo $exif===false ? "No header data found.<br />\n" : "Image contains headers<br />\n";
 
+    // $exif = exif_read_data($filepath, 0, true);
     $exif = exif_read_data($filepath, 0, true);
-    foreach ($exif as $key => $section) {
-        foreach ($section as $name => $val) {
-            echo $key." ".$name.": ";
-            print_r($val);
-            // echo "$key.$name: $val";
-            echo "<br>";
-        }
-    }
+    // $exif = exif_read_data($filepath, 'IFD0', 0);
+	// $exif = exif_read_data($filepath, 'IFD0, EXIF', true);
+	print_r($exif);
+	// var_dump($exif);
+    echo "<br>";
+    echo "<br>";
+    // foreach ($exif as $key => $section) {
+    //     foreach ($section as $name => $val) {
+    //         echo $key." ".$name.": ";
+    //         print_r($val);
+    //         // echo "$key.$name: $val";
+    //         echo "<br>";
+    //     }
+    // }
+	$arr = array();
+	foreach ($settings as $k => $i) {
+		foreach ($i as $k1 => $i1) {
+			// $arr = 
+		}
+	}
 }
 
 function exifGetType($filepath) {
@@ -74,11 +117,22 @@ function exifGetType($filepath) {
 function getExif($filepath) {
 	$val = exifGetType($filepath);
 	if ($val!=FALSE) {
-		exifReadData($filepath);
+		exifReadData($filepath, getCamSett());
 	}
 }
 
-$filepath = "/IMG_5964.jpg";
+function getCamSett() {
+	$settings = array(
+		'IFD0' => array('Make', 'Model'),
+		'EXIF' => array('FNumber', 'ExposureTime', 'ISOSpeedRatings',
+		'ExposureBiasValue', 'FocalLength', 'MaxApertureValue',
+		'MeteringModeValue', 'ExposureProgram', 'WhiteBalance'
+		)
+	);
+	return $settings;
+}
+
+$filepath = "C:/Users/Tom/Documents/IMG_5964.jpg";
 getExif($filepath);
 
 ?>
