@@ -1,0 +1,79 @@
+
+FILE FileName: IMG_5964.jpg
+FILE FileDateTime: 1475149798
+FILE FileSize: 4717525
+FILE FileType: 2
+FILE MimeType: image/jpeg
+FILE SectionsFound: ANY_TAG, IFD0, THUMBNAIL, EXIF, INTEROP
+COMPUTED html: width="4272" height="2848"
+COMPUTED Height: 2848
+COMPUTED Width: 4272
+COMPUTED IsColor: 1
+COMPUTED ByteOrderMotorola: 0
+COMPUTED CCDWidth: 22mm
+COMPUTED ApertureFNumber: f/10.0
+COMPUTED UserComment: 
+COMPUTED UserCommentEncoding: UNDEFINED
+COMPUTED Thumbnail.FileType: 2
+COMPUTED Thumbnail.MimeType: image/jpeg
+IFD0 ImageWidth: 4272
+IFD0 ImageLength: 2848
+IFD0 BitsPerSample: Array ( [0] => 8 [1] => 8 [2] => 8 ) 
+IFD0 PhotometricInterpretation: 2
+IFD0 Make: Canon
+IFD0 Model: Canon EOS 1100D
+IFD0 Orientation: 1
+IFD0 SamplesPerPixel: 3
+IFD0 XResolution: 720000/10000
+IFD0 YResolution: 720000/10000
+IFD0 ResolutionUnit: 2
+IFD0 Software: Adobe Photoshop CC 2015 (Windows)
+IFD0 DateTime: 2016:04:26 13:26:04
+IFD0 YCbCrPositioning: 2
+IFD0 Exif_IFD_Pointer: 292
+THUMBNAIL Compression: 6
+THUMBNAIL XResolution: 72/1
+THUMBNAIL YResolution: 72/1
+THUMBNAIL ResolutionUnit: 2
+THUMBNAIL JPEGInterchangeFormat: 1418
+THUMBNAIL JPEGInterchangeFormatLength: 4219
+EXIF ExposureTime: 1/125
+EXIF FNumber: 10/1
+EXIF ExposureProgram: 8
+EXIF ISOSpeedRatings: 100
+EXIF UndefinedTag:0x8830: 2
+EXIF UndefinedTag:0x8832: 100
+EXIF ExifVersion: 0230
+EXIF DateTimeOriginal: 2016:04:20 06:25:05
+EXIF DateTimeDigitized: 2016:04:20 06:25:05
+EXIF ComponentsConfiguration: 
+EXIF ShutterSpeedValue: 458752/65536
+EXIF ApertureValue: 434176/65536
+EXIF ExposureBiasValue: 0/1
+EXIF MaxApertureValue: 4/1
+EXIF MeteringMode: 5
+EXIF Flash: 16
+EXIF FocalLength: 25/1
+EXIF UserComment: 
+EXIF SubSecTime: 89
+EXIF SubSecTimeOriginal: 89
+EXIF SubSecTimeDigitized: 89
+EXIF FlashPixVersion: 0100
+EXIF ColorSpace: 1
+EXIF ExifImageWidth: 4272
+EXIF ExifImageLength: 2848
+EXIF InteroperabilityOffset: 1292
+EXIF FocalPlaneXResolution: 4272000/905
+EXIF FocalPlaneYResolution: 2848000/595
+EXIF FocalPlaneResolutionUnit: 2
+EXIF CustomRendered: 0
+EXIF ExposureMode: 0
+EXIF WhiteBalance: 0
+EXIF SceneCaptureType: 0
+EXIF UndefinedTag:0xA430: 
+EXIF UndefinedTag:0xA431: 153063126438
+EXIF UndefinedTag:0xA432: Array ( [0] => 18/1 [1] => 55/1 [2] => 0/0 [3] => 0/0 ) 
+EXIF UndefinedTag:0xA434: EF-S18-55mm f/3.5-5.6 IS II
+EXIF UndefinedTag:0xA435: 000042b27a
+INTEROP InterOperabilityIndex: R98
+INTEROP InterOperabilityVersion: 0100
