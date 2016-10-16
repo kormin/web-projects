@@ -103,9 +103,10 @@ function exifReadData($filepath, $settings) {
 	$arr = array();
 	foreach ($settings as $k => $i) {
 		foreach ($i as $k1 => $i1) {
-			// $arr = 
+			$arr[$k][$i1] = $exif[$k][$i1];
 		}
 	}
+	print_r($arr);
 }
 
 function exifGetType($filepath) {
@@ -126,7 +127,7 @@ function getCamSett() {
 		'IFD0' => array('Make', 'Model'),
 		'EXIF' => array('FNumber', 'ExposureTime', 'ISOSpeedRatings',
 		'ExposureBiasValue', 'FocalLength', 'MaxApertureValue',
-		'MeteringModeValue', 'ExposureProgram', 'WhiteBalance'
+		'MeteringMode', 'ExposureProgram', 'WhiteBalance'
 		)
 	);
 	return $settings;
