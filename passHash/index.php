@@ -11,9 +11,13 @@
 
 require_once('../../assets/index.php');
 
+$val = '';
+$res = '';
+
 if (!empty($_GET['submit'])) {
 	$passw = $_GET['passw'];
-	echo password_hash($passw, PASSWORD_BCRYPT);
+	$val = password_hash($passw, PASSWORD_BCRYPT);
+	$res = password_verify($passw, $val);
 }
 
 ?>
@@ -55,6 +59,14 @@ if (!empty($_GET['submit'])) {
 					</div>
 				</div>
 			</form>
+			<div class="row">
+				<?php
+					if (!empty($_GET['submit']) && $val!='') :
+				?>
+				<h4 id="selectable" onclick="selectText('selectable')"><?=$val;?></h4>
+				<h4>password_verify result: <?=$res;?></h4>
+				<?php endif; ?>
+			</div>
 		</div>
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<!-- <script src="<?=JQRY; ?>" type="text/javascript"></script> -->
@@ -62,6 +74,17 @@ if (!empty($_GET['submit'])) {
 		<!-- <script src="<?=TWBS_JS; ?>"></script> -->
 		<script type="text/javascript">
 			// variables
+			function selectText(containerid) {
+				if (document.selection) {
+					var range = document.body.createTextRange();
+					range.moveToElementText(document.getElementById(containerid));
+					range.select();
+				} else if (window.getSelection) {
+					var range = document.createRange();
+					range.selectNode(document.getElementById(containerid));
+					window.getSelection().addRange(range);
+				}
+			}
 		</script>
 	</body>
 </html>
