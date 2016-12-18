@@ -58,6 +58,28 @@
 			window.onload = function() {
 				$(document).ready(main());
 			}
+			function main() {
+				colid = getEl('col');
+				rowid = getEl('row');
+				target = getEl('output');
+				inputEvent();
+			}
+			/*
+			 * Description: Gets element from id
+			 * @param string id
+			 * @return Element
+			 */
+			function getEl(id) {
+				return document.getElementById(id);
+			}
+			/*
+			 * Source:
+			 * https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/oninput
+			 * 
+			 */
+			function inputEvent() {
+				window.addEventListener('input', getEventVal, false);
+			}
 		</script>
 	</body>
 </html>
