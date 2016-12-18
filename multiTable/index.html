@@ -80,6 +80,40 @@
 			function inputEvent() {
 				window.addEventListener('input', getEventVal, false);
 			}
+			/*
+			 * Description: Gets col or row from oninput event
+			 * @param Element e
+			 * @return null
+			 */
+			function getEventVal(e) {
+				if (e.target.id == colid.id) {
+					col = e.target.value;
+					makeTable();
+				}else if (e.target.id == rowid.id) {
+					row = e.target.value;
+					makeTable();
+				}else{
+					alert('Error. Input Field not found.');
+				}
+			}
+			function tableHead() {
+				var thead = document.createElement('thead');
+				var tr = document.createElement('tr');
+				var th = document.createElement('th');
+				th.appendChild(document.createTextNode('#'))
+				tr.appendChild(th);
+				thead.appendChild(tr);
+				target.appendChild(thead);
+			}
+			function tableCol() {
+			}
+			/*
+			 * Description: Makes multiplication table
+			 * @param 
+			 * @return null
+			 */
+			function makeTable() {
+			}
 		</script>
 	</body>
 </html>
