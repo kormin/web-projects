@@ -105,18 +105,27 @@
 					alert('Error. Input Field not found.');
 				}
 			}
-			function tableHead() {
-				th.appendChild(document.createTextNode('#'))
+			function addNode(th, value) {
+				th.setAttribute('id', 'thid'+value);
+				th.appendChild(document.createTextNode(value));
 				tr.appendChild(th);
 				thead.appendChild(tr);
 				target.appendChild(thead);
-				colprev = rowprev = 1;
-				console.log(document.getElementsByTagName('th'));
+			}
+			function tableHead() {
+				addNode(th, '#');
+				colprev = rowprev = 0;
+				// console.log(document.getElementsByTagName('th'));
 			}
 			function tableCol() {
-				if (colprev >= col) {
-
+				if (colprev < col) {
+					var tp = setEl('th');
+					addNode(tp, col);
+				}else{
+					// var tp = setEl('tr');
+					tr.removeChild(getEl('thid'+colprev));
 				}
+				colprev = col;
 			}
 			/*
 			 * Description: Makes multiplication table
