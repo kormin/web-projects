@@ -53,7 +53,7 @@
 		<!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="../../assets/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
-			var thead, tr, th;
+			var thead, tbody, tr, trrow, th;
 			var colid, rowid, target;
 			var col, row, colprev, rowprev;
 			window.onload = function() {
@@ -64,7 +64,9 @@
 				rowid = getEl('row');
 				target = getEl('output');
 				thead = setEl('thead');
+				tbody = setEl('tbody');
 				tr = setEl('tr');
+				trrow = setEl('tr');
 				th = setEl('th');
 				tableHead();
 				inputEvent();
@@ -97,10 +99,9 @@
 				if (e.target.id == colid.id) {
 					col = e.target.value;
 					tableCol();
-					makeTable();
 				}else if (e.target.id == rowid.id) {
 					row = e.target.value;
-					makeTable();
+					tableRow();
 				}else{
 					alert('Error. Input Field not found.');
 				}
@@ -112,10 +113,29 @@
 				thead.appendChild(tr);
 				target.appendChild(thead);
 			}
+			function addRow(td, value) {
+				td.setAttribute('id', 'tdid'+value);
+				td.appendChild(document.createTextNode(value));
+				trrow.appendChild(td);
+				tbody.appendChild(trrow);
+				target.appendChild(tbody);
+			}
 			function tableHead() {
 				addNode(th, '#');
 				colprev = rowprev = 0;
 				// console.log(document.getElementsByTagName('th'));
+			}
+			function tableRow() {
+				if (rowprev < row) {
+					for (var i=1; i<=row; i++) {
+						addRow(setEl('td'), i);
+					}
+				}else{
+					for (var i=1; i<=rowprev; i++) {
+						trrow.removeChild(getEl('tdid'+i));
+					}
+				}
+				rowprev = row;
 			}
 			/*
 			 * Description: Increments or Decrements Col by number of columns
