@@ -53,8 +53,9 @@
 		<!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="../../assets/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
+			var thead, tr, th;
 			var colid, rowid, target;
-			var col, row;
+			var col, row, colprev, rowprev;
 			window.onload = function() {
 				$(document).ready(main());
 			}
@@ -62,6 +63,10 @@
 				colid = getEl('col');
 				rowid = getEl('row');
 				target = getEl('output');
+				thead = setEl('thead');
+				tr = setEl('tr');
+				th = setEl('th');
+				tableHead();
 				inputEvent();
 			}
 			/*
@@ -71,6 +76,9 @@
 			 */
 			function getEl(id) {
 				return document.getElementById(id);
+			}
+			function setEl(el) {
+				return document.createElement(el);
 			}
 			/*
 			 * Source:
@@ -88,6 +96,7 @@
 			function getEventVal(e) {
 				if (e.target.id == colid.id) {
 					col = e.target.value;
+					tableCol();
 					makeTable();
 				}else if (e.target.id == rowid.id) {
 					row = e.target.value;
@@ -97,15 +106,17 @@
 				}
 			}
 			function tableHead() {
-				var thead = document.createElement('thead');
-				var tr = document.createElement('tr');
-				var th = document.createElement('th');
 				th.appendChild(document.createTextNode('#'))
 				tr.appendChild(th);
 				thead.appendChild(tr);
 				target.appendChild(thead);
+				colprev = rowprev = 1;
+				console.log(document.getElementsByTagName('th'));
 			}
 			function tableCol() {
+				if (colprev >= col) {
+
+				}
 			}
 			/*
 			 * Description: Makes multiplication table
