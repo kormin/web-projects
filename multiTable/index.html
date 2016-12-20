@@ -117,7 +117,30 @@
 				colprev = rowprev = 0;
 				// console.log(document.getElementsByTagName('th'));
 			}
+			/*
+			 * Description: Increments or Decrements Col by number of columns
+			 * @param null
+			 * @return null
+			 */
 			function tableCol() {
+				if (colprev < col) {
+					for (var i=1; i<=col; i++) {
+						var tp = setEl('th');
+						addNode(tp, i);
+					}
+				}else{
+					for (var i=1; i<=colprev; i++) {
+						tr.removeChild(getEl('thid'+i));
+					}
+				}
+				colprev = col;
+			}
+			/*
+			 * Description: Increments or Decrements Col by 1
+			 * @param null
+			 * @return null
+			 */
+			function addCol() {
 				if (colprev < col) {
 					var tp = setEl('th');
 					addNode(tp, col);
